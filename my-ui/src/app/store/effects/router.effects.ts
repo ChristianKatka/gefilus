@@ -19,20 +19,6 @@ export class RouterEffects {
     )
   );
 
-  redirectToAppInitialization$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthenticatedActions.redirectToAppInitialization),
-      map(() => RouterActions.navigate({ commands: ['/initializing'] }))
-    )
-  );
-
-  // redirectToSignIn$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(AuthenticatedActions.redirectToSignIn),
-  //     map(() => RouterActions.navigate({ commands: ['/sign-in'] }))
-  //   )
-  // );
-
   redirectToNewPasswordRequired = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthSignInActions.redirectToNewPasswordRequired),
@@ -56,16 +42,20 @@ export class RouterEffects {
     )
   );
 
-  redirectToAuthenticatedHome$ = createEffect(() =>
+  redirectToHome$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthenticatedActions.redirectToAuthenticatedHome),
+      ofType(AuthenticatedActions.redirectToHome),
       map(() => RouterActions.navigate({ commands: ['/'] }))
     )
   );
 
-  redirectToUnauthenticatedHome$ = createEffect(() =>
+  redirectToSignIn$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthenticatedActions.redirectToUnauthenticatedHome),
+      ofType(
+        AuthenticatedActions.redirectToSignIn,
+        AuthenticatedActions.signOutSuccess,
+        AuthenticatedActions.userNotRemembered
+      ),
       map(() => RouterActions.navigate({ commands: ['/sign-in'] }))
     )
   );

@@ -6,6 +6,8 @@ import { SignUpConfirmationContainerComponent } from './components/sign-up-confi
 import { SignUpContainerComponent } from './components/sign-up/sign-up.container';
 import { SignUpConfirmationGuard } from './guards/sign-up-confirmation.guard';
 import { UnauthenticatedGuard } from './guards/unauthenticated.guard';
+import { AuthenticatedGuard } from './guards/authenticated.guard';
+import { WelcomeContainerComponent } from './components/welcome/welcome.container';
 
 export const authRoutes: Routes = [
   {
@@ -29,6 +31,11 @@ export const authRoutes: Routes = [
     path: 'new-password-required',
     canActivate: [UnauthenticatedGuard],
     component: SignInNewPasswordRequiredContainerComponent,
+  },
+  {
+    path: 'welcome',
+    canActivate: [AuthenticatedGuard],
+    component: WelcomeContainerComponent,
   },
 ];
 

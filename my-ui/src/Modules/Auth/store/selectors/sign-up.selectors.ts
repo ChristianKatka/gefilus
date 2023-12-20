@@ -3,7 +3,7 @@ import { getSignUpState } from '../reducers';
 
 export const isLoading = createSelector(
   getSignUpState,
-  (state) => state.loading
+  (state) => state.isLoading
 );
 
 export const usernameAlreadyExists = createSelector(
@@ -38,3 +38,16 @@ export const getSignUpUserNameAndPassword = createSelector(
     password: state.password,
   })
 );
+
+// export const signUpControlData = createSelector(getSignUpState, (state) => ({
+//   email: state.username,
+//   username: state.username,
+//   password: state.password,
+//   isLoading: state.isLoading,
+//   errorAndOrInfoMessages: {
+//     usernameAlreadyExists: state.usernameAlreadyExists,
+//     emailConfirmationCodeMismatch: state.emailConfirmationCodeMismatch,
+//     newConfirmationCodeSent: state.newConfirmationCodeSent,
+//     newConfirmationCodeLimitExceeded: state.newConfirmationCodeLimitExceeded,
+//   },
+// }));

@@ -27,10 +27,40 @@ export const reducers: ActionReducerMap<AuthFeatureState> = {
   authenticated: fromAuthenticated.reducer,
 };
 
+// export const getMainState = createFeatureSelector<
+//   AuthExtendedAppState,
+//   AuthFeatureState
+// >(featureKey);
+
+// export const getAuthFeatureState =
+//   createFeatureSelector<fromAuthenticated.AuthenticatedState>('authenticated');
+
+// export const getAuthState = createSelector(
+//   getMainState,
+//   (authState) => authState
+// );
+
+// export const getSignUpFeatureState =
+//   createFeatureSelector<fromSignUp.SignUpState>('signUp');
+
+// export const getSignUpState = createSelector(
+//   getMainState,
+//   (authState) => authState
+// );
+
+// export const getSignInFeatureState =
+//   createFeatureSelector<fromSignIn.SignInState>('signIn');
+
+// export const getSignInState = createSelector(
+//   getMainState,
+//   (SignInState) => SignInState
+// );
+
 export const getAuthState = createFeatureSelector<
   AuthExtendedAppState,
   AuthFeatureState
 >(featureKey);
+
 export const getSignIn =
   createFeatureSelector<fromSignIn.SignInState>('signIn');
 export const getSignUp =

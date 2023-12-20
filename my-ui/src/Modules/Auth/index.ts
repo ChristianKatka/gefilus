@@ -8,6 +8,8 @@ import { SignUpConfirmationFormComponent } from './components/sign-up-confirmati
 import { SignUpConfirmationContainerComponent } from './components/sign-up-confirmation/sign-up-confirmation.container';
 import { SignUpFormComponent } from './components/sign-up/sign-up-form.component';
 import { SignUpContainerComponent } from './components/sign-up/sign-up.container';
+import { WelcomeComponent } from './components/welcome/welcome.component';
+import { WelcomeContainerComponent } from './components/welcome/welcome.container';
 
 export const components: any[] = [
   SignInNewPasswordRequiredFormComponent,
@@ -20,4 +22,6 @@ export const components: any[] = [
   SignUpFormComponent,
   SignUpConfirmationErrorsComponent,
   NewConfirmationCodeSentSnackbarComponent,
+  WelcomeComponent,
+  WelcomeContainerComponent,
 ];

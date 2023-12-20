@@ -5,7 +5,7 @@ export interface SignUpState {
   username: string | undefined;
   password: string | undefined;
   email: string | undefined;
-  loading: boolean;
+  isLoading: boolean;
   usernameAlreadyExists: boolean;
   emailConfirmationCodeMismatch: boolean;
   newConfirmationCodeSent: boolean;
@@ -16,7 +16,7 @@ export const initialState: SignUpState = {
   username: undefined,
   password: undefined,
   email: undefined,
-  loading: false,
+  isLoading: false,
   usernameAlreadyExists: false,
   emailConfirmationCodeMismatch: false,
   newConfirmationCodeSent: false,
@@ -27,51 +27,51 @@ const signUpReducer = createReducer(
   initialState,
   on(AuthSignUpActions.signUp, (state, { signUpUserData }) => ({
     ...state,
-    loading: true,
+    isLoading: true,
     username: signUpUserData.username,
     password: signUpUserData.password,
     email: signUpUserData.email,
   })),
   on(AuthSignUpActions.signUpSuccess, (state, { signUpUserData }) => ({
     ...state,
-    loading: false,
+    isLoading: false,
     username: signUpUserData.username,
     password: signUpUserData.password,
     email: signUpUserData.email,
   })),
   on(AuthSignUpActions.signUpFailureUsernameAlreadyExists, (state) => ({
     ...state,
-    loading: false,
+    isLoading: false,
     usernameAlreadyExists: true,
   })),
   on(
     AuthSignUpActions.confirmRegistrationByEmailCodeFailureCodeMismatch,
     (state) => ({
       ...state,
-      loading: false,
+      isLoading: false,
       emailConfirmationCodeMismatch: true,
     })
   ),
   on(AuthSignUpActions.sendNewEmailConfirmationCode, (state) => ({
     ...state,
-    loading: true,
+    isLoading: true,
   })),
   on(AuthSignUpActions.sendNewEmailConfirmationCodeSuccess, (state) => ({
     ...state,
-    loading: false,
+    isLoading: false,
     newConfirmationCodeSent: true,
   })),
   on(
     AuthSignUpActions.sendNewEmailConfirmationCodeFailureLimitExceeded,
     (state) => ({
       ...state,
-      loading: false,
+      isLoading: false,
       newConfirmationCodeLimitExceeded: true,
     })
   ),
   on(AuthSignUpActions.confirmRegistrationByEmailCode, (state) => ({
     ...state,
-    loading: true,
+    isLoading: true,
   })),
 
   // When user ask new confirmation code, we can show which email it was sent

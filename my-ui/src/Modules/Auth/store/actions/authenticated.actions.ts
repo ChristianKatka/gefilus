@@ -18,11 +18,11 @@ export const authenticateUserFailure = createAction(
   props<{ error: string }>()
 );
 
-export const authenticateUserAfterUserEmailConfirmed = createAction(
+export const verifyUserAfterUserEmailConfirmed = createAction(
   '[Auth] Authenticate User After User Email Confirmed',
   props<{ username: string; password: string }>()
 );
-export const authenticateUserAfterUserEmailConfirmedSuccess = createAction(
+export const verifyUserAfterUserEmailConfirmedSuccess = createAction(
   '[Auth] Authenticate User After User Email Confirmed Success'
 );
 
@@ -33,12 +33,5 @@ export const redirectToWelcomePage = createAction(
 export const signOut = createAction('[Auth] Sign Out');
 export const signOutSuccess = createAction('[Auth] Sign Out Success');
 
-export const redirectToAuthenticatedHome = createAction(
-  '[Auth] Redirect to Authenticated Home'
-);
-export const redirectToUnauthenticatedHome = createAction(
-  '[Auth] Redirect to Unauthenticated Home'
-);
-export const redirectToAppInitialization = createAction(
-  '[Auth] Redirect to App Initialization'
-);
+export const redirectToHome = createAction('[Auth] Redirect To Home');
+export const redirectToSignIn = createAction('[Auth] Redirect to Sign In');

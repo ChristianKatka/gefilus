@@ -37,7 +37,7 @@ export class UnauthenticatedGuard {
     const userIsLoggedInSoRedirectToHome = !isUnAuthenticated;
 
     if (userIsLoggedInSoRedirectToHome) {
-      this.store.dispatch(AuthenticatedActions.redirectToAuthenticatedHome());
+      this.store.dispatch(AuthenticatedActions.redirectToHome());
     }
   }
 }

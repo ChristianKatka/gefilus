@@ -24,7 +24,7 @@ export class AuthenticatedGuard {
 
   ifUserTypesUnAllowedPathInUrlThenRedirect(loggedIn: boolean) {
     if (!loggedIn) {
-      this.store.dispatch(AuthenticatedActions.redirectToUnauthenticatedHome());
+      this.store.dispatch(AuthenticatedActions.redirectToSignIn());
     }
   }
 }

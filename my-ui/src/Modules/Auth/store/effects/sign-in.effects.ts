@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import * as fromServices from '../../services/cognito.service';
 import {
-  AuthenticatedActions,
   AuthSignInActions,
   AuthSignUpActions,
+  AuthenticatedActions,
 } from '../actions';
-import * as fromServices from '../../services/cognito.service';
-import { of } from 'rxjs';
-import {
-  switchMap,
-  map,
-  catchError,
-  withLatestFrom,
-  tap,
-} from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { AuthSignInSelectors } from '../selectors';
 import { AuthExtendedAppState } from '../reducers';
+import { AuthSignInSelectors } from '../selectors';
 
 @Injectable()
 export class SignInEffects {
@@ -35,11 +29,9 @@ export class SignInEffects {
               return AuthenticatedActions.authenticateUserSuccess();
             }),
             catchError((error: any) => {
-              let action$;
-
               // REGISTERED FROM THE APP BUT NEVER CONFIRMED ACCOUNT WITH EMAIL CODE
               if (error.code === 'UserNotConfirmedException') {
-                action$ = of(
+                return of(
                   AuthSignUpActions.redirectToEmailConfirmationView({
                     username: signInData.username,
                     password: signInData.password,
@@ -47,21 +39,16 @@ export class SignInEffects {
                 );
                 // WRONG PASSWORD
               } else if (error.code === 'NotAuthorizedException') {
-                action$ = of(
+                return of(
                   AuthSignInActions.authenticateUserFailureNotAuthorized()
                 );
                 // WRONG USERNAME AKA EMAIL
               } else if (error.code === 'UserNotFoundException') {
-                action$ = of(
+                return of(
                   AuthSignInActions.authenticateUserFailureNotAuthorized()
                 );
-              } else {
-                action$ = of(
-                  AuthenticatedActions.authenticateUserFailure(error)
-                );
               }
-
-              return action$;
+              return of(AuthenticatedActions.authenticateUserFailure(error));
             })
           )
       )
@@ -81,7 +68,7 @@ export class SignInEffects {
       map((action) => action.newPassword),
       withLatestFrom(this.store.select(AuthSignInSelectors.getSignInUserName)),
       switchMap(([newPassword, username]) => {
-        if (username === undefined) {
+        if (!username) {
           return of(
             AuthSignInActions.changeNewPasswordFailure({
               error: 'Cannot change new password if username doesnt exist.',

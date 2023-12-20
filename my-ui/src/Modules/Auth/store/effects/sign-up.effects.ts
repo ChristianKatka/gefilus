@@ -21,19 +21,14 @@ export class SignUpEffects {
             })
           ),
           catchError((error: any) => {
-            let action$;
-
             if (error.code === 'UsernameExistsException') {
-              action$ = of(
+              return of(
                 AuthSignUpActions.signUpFailureUsernameAlreadyExists({
                   username: signUpUserData.username,
                 })
               );
-            } else {
-              action$ = of(AuthSignUpActions.signUpFailure(error));
             }
-
-            return action$;
+            return of(AuthSignUpActions.signUpFailure(error));
           })
         )
       )
@@ -55,11 +50,10 @@ export class SignUpEffects {
   confirmRegistrationByEmailCode$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthSignUpActions.confirmRegistrationByEmailCode),
-      map((payload) => payload.code),
       withLatestFrom(
         this.store.select(AuthSignUpSelectors.getSignUpUserNameAndPassword)
       ),
-      switchMap(([code, { username, password }]) => {
+      switchMap(([{ code }, { username, password }]) => {
         if (username === undefined || password === undefined) {
           return of(
             AuthSignUpActions.confirmRegistrationByEmailCodeFailure({
@@ -84,13 +78,12 @@ export class SignUpEffects {
                 return of(
                   AuthSignUpActions.confirmRegistrationByEmailCodeFailureCodeMismatch()
                 );
-              } else {
-                return of(
-                  AuthSignUpActions.confirmRegistrationByEmailCodeFailure(
-                    error.code
-                  )
-                );
               }
+              return of(
+                AuthSignUpActions.confirmRegistrationByEmailCodeFailure(
+                  error.code
+                )
+              );
             })
           );
       })
@@ -102,11 +95,10 @@ export class SignUpEffects {
       ofType(AuthSignUpActions.sendNewEmailConfirmationCode),
       withLatestFrom(this.store.select(AuthSignUpSelectors.getEmail)),
       switchMap(([payload, email]) => {
-        if (email === undefined) {
+        if (!email) {
           return of(
             AuthSignUpActions.sendNewEmailConfirmationCodeFailure({
-              error:
-                'Email is undefined where confirmation code should be sent.',
+              error: 'No email provided',
             })
           );
         }
@@ -136,30 +128,30 @@ export class SignUpEffects {
     )
   );
 
-  authenticateUserAfterUserEmailConfirmed$ = createEffect(() =>
+  confirmRegistrationSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthenticatedActions.authenticateUserAfterUserEmailConfirmed),
+      ofType(AuthSignUpActions.confirmRegistrationByEmailCodeSuccess),
+      map(({ username, password }) =>
+        AuthenticatedActions.verifyUserAfterUserEmailConfirmed({
+          username,
+          password,
+        })
+      )
+    )
+  );
+
+  verifyUserAfterUserEmailConfirmed$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthenticatedActions.verifyUserAfterUserEmailConfirmed),
       switchMap(({ username, password }) =>
         this.cognitoService.authenticateUser(username, password).pipe(
           map(() =>
-            AuthenticatedActions.authenticateUserAfterUserEmailConfirmedSuccess()
+            AuthenticatedActions.verifyUserAfterUserEmailConfirmedSuccess()
           ),
           catchError((error: any) =>
             of(AuthenticatedActions.authenticateUserFailure(error))
           )
         )
-      )
-    )
-  );
-
-  confirmRegistrationSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthSignUpActions.confirmRegistrationByEmailCodeSuccess),
-      map(({ username, password }) =>
-        AuthenticatedActions.authenticateUserAfterUserEmailConfirmed({
-          username,
-          password,
-        })
       )
     )
   );

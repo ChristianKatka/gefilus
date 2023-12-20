@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { RouterActions } from '@app/store/actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -41,28 +40,21 @@ export class AuthenticatedEffects {
     )
   );
 
-  signOutSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        AuthenticatedActions.signOutSuccess,
-        AuthenticatedActions.userNotRemembered
-      ),
-      map(() =>
-        RouterActions.navigate({
-          commands: ['/sign-in'],
-        })
-      )
-    )
-  );
-
   authSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        AuthenticatedActions.authenticateUserAfterUserEmailConfirmedSuccess,
+        AuthenticatedActions.verifyUserAfterUserEmailConfirmedSuccess,
         AuthenticatedActions.authenticateUserSuccess,
         AuthenticatedActions.userRemembered
       ),
-      map(() => AuthenticatedActions.redirectToAuthenticatedHome())
+      map(() => AuthenticatedActions.redirectToHome())
+    )
+  );
+
+  keksi$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthenticatedActions.verifyUserAfterUserEmailConfirmedSuccess),
+      map(() => AuthenticatedActions.redirectToWelcomePage())
     )
   );
 
