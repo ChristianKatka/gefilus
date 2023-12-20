@@ -1,0 +1,47 @@
+@use "../../../../styles/mixins/ios.scss" as *;
+@use "../../../../styles/variables/" as *;
+
+@include disable-auto-zoom-on-iphone-input-fields;
+
+object {
+  width: 15rem;
+  margin-top: 1rem;
+}
+h1 {
+  margin: 20px 0px;
+}
+mat-form-field {
+  width: 100%;
+  margin: 20px 0;
+}
+
+button {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+mat-icon {
+  color: var(--light-gray);
+}
+
+b {
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
+small {
+  text-align: center;
+}
+
+.toggleShowPasswordButton {
+  cursor: pointer;
+}
+
+.bottom-centered-items {
+  margin-bottom: 1rem;
+}
+
+mat-error {
+  margin-bottom: 10px !important;
+}

@@ -1,0 +1,105 @@
+<section class="flex-row align-center-center">
+  <object data="assets/art/secure_login.svg" type="image/svg+xml"></object>
+</section>
+
+<h1>Register</h1>
+
+<app-error-box
+  *ngIf="usernameAlreadyExists"
+  text="Given email already exist."
+></app-error-box>
+
+<form [formGroup]="signUpUserDataForm">
+  <mat-form-field appearance="outline">
+    <mat-error *ngIf="signUpUserDataForm.get('email')?.hasError('required')"
+      >Email is required.</mat-error
+    >
+    <mat-error *ngIf="signUpUserDataForm.get('email')?.hasError('email')">
+      Enter a valid email address.
+    </mat-error>
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="email"
+      autocomplete="email"
+      required
+      maxlength="40"
+      formControlName="email"
+    />
+    <mat-icon class="material-icons-outlined" matPrefix>mail</mat-icon>
+    <mat-hint>E.g. john.johnson&#64;gmail.com</mat-hint>
+  </mat-form-field>
+</form>
+
+<form [formGroup]="passwordsForm">
+  <mat-form-field appearance="outline" hintLabel="Please use strong password">
+    <mat-error *ngIf="passwordsForm.get('password')?.hasError('minlength')"
+      >Password required length 8</mat-error
+    >
+    <mat-error *ngIf="passwordsForm.get('password')?.hasError('required')"
+      >Password is required</mat-error
+    >
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      [type]="showPassword ? 'text' : 'password'"
+      autocomplete="new-password"
+      required
+      minlength="8"
+      maxlength="40"
+      formControlName="password"
+    />
+    <mat-icon class="material-icons-outlined" matPrefix>lock</mat-icon>
+    <mat-icon
+      matSuffix
+      (click)="showPassword = !showPassword"
+      class="toggleShowPasswordButton material-icons-outlined"
+      >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
+    >
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-error *ngIf="passwordsForm.get('passwordConfirm')?.dirty">
+      Ensure passwords match.
+    </mat-error>
+    <mat-label>Confirm password</mat-label>
+    <input
+      matInput
+      maxlength="40"
+      autocomplete="new-password"
+      [errorStateMatcher]="matcher"
+      [type]="showPasswordConfirm ? 'text' : 'password'"
+      formControlName="passwordConfirm"
+    />
+    <mat-icon class="material-icons-outlined" matPrefix>lock</mat-icon>
+    <mat-icon
+      matSuffix
+      (click)="showPasswordConfirm = !showPasswordConfirm"
+      class="toggleShowPasswordButton material-icons-outlined"
+      >{{ showPasswordConfirm ? "visibility" : "visibility_off" }}</mat-icon
+    >
+    <mat-hint>Must match the password above.</mat-hint>
+  </mat-form-field>
+</form>
+<div class="bottom-centered-items flex-column align-center-center">
+  <small>
+    By signing up you accept the<br />
+    <b (click)="this.showTermsOfService.emit()">Terms of Service</b> and
+    <b (click)="this.showPrivacyPolicy.emit()">Privacy Policy</b>
+  </small>
+
+  <button
+    *ngIf="!isLoading"
+    mat-raised-button
+    color="primary"
+    [disabled]="this.signUpUserDataForm.invalid && this.passwordsForm.invalid"
+    (click)="submit()"
+  >
+    Register
+  </button>
+  <button *ngIf="isLoading" mat-raised-button color="primary" disabled>
+    <app-loading-spinner [diameter]="30"></app-loading-spinner>
+  </button>
+
+  <span>Already registered? <b routerLink="/sign-in">Login</b></span>
+</div>

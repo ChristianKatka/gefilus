@@ -1,0 +1,68 @@
+<section class="flex-row align-center-center">
+  <object data="assets/art/mail.svg" type="image/svg+xml"></object>
+</section>
+
+<h2>Verify your email</h2>
+
+<p class="description-text">
+  Please enter the 6 digit code sent to <b>{{ email }}</b>
+</p>
+
+<form class="flex-column" [formGroup]="confirmationCodeForm">
+  <mat-form-field appearance="outline">
+    <mat-label>Confirmation Code</mat-label>
+    <input
+      matInput
+      type="tel"
+      required
+      minlength="6"
+      maxlength="6"
+      formControlName="confirmationCode"
+    />
+
+    <mat-error
+      *ngIf="
+        confirmationCodeForm.get('confirmationCode')?.hasError('minlength')
+      "
+      >Code minimum length is 6</mat-error
+    >
+    <mat-error
+      *ngIf="confirmationCodeForm.get('confirmationCode')?.hasError('required')"
+      >Confirmation code is required</mat-error
+    >
+  </mat-form-field>
+
+  <app-sign-up-confirmation-errors
+    [emailConfirmationCodeMismatch]="emailConfirmationCodeMismatch"
+    [newConfirmationCodeLimitExceeded]="newConfirmationCodeLimitExceeded"
+  ></app-sign-up-confirmation-errors>
+
+  <div class="flex-row align-center-center resend-code">
+    <p (click)="newEmailConfirmationCodeOrdered()">Resend Code</p>
+  </div>
+
+  <button
+    class="confirm-button"
+    *ngIf="isLoading"
+    mat-raised-button
+    color="primary"
+    disabled
+  >
+    <app-loading-spinner [diameter]="30"></app-loading-spinner>
+  </button>
+
+  <button
+    class="confirm-button"
+    *ngIf="!isLoading"
+    mat-raised-button
+    [disabled]="this.confirmationCodeForm.invalid"
+    color="primary"
+    (click)="submit()"
+  >
+    Confirm
+  </button>
+
+  <div class="flex-row align-center-center sign-up-page">
+    <a class="sign-up">Go to Sign up page</a>
+  </div>
+</form>

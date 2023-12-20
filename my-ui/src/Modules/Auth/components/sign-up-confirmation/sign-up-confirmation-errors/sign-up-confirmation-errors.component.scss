@@ -1,0 +1,23 @@
+@use "../../../../../styles/variables/" as *;
+
+.icon-wrapper {
+  flex: 1;
+  background-color: var(--error-red);
+  border-radius: 5px 0px 0px 5px;
+
+  mat-icon {
+    padding-top: 15px;
+    color: white;
+  }
+}
+
+.text-wrapper {
+  flex: 5;
+  background-color: var(--dark-background);
+  padding: 1rem;
+  border-radius: 0px 5px 5px 0px;
+
+  span {
+    color: white;
+  }
+}

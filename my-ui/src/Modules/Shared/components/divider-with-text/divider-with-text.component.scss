@@ -1,0 +1,17 @@
+@use "../../../../styles/variables/" as *;
+
+.divider-with-text-wrapper {
+  width: 100%;
+  padding: 20px 0;
+  .divider {
+    position: relative;
+    border-bottom: 1px solid var(--primary-color);
+    width: 100%;
+    span {
+      color: var(--primary-color);
+      background-color: white;
+      position: absolute;
+      padding: 0 10px;
+    }
+  }
+}

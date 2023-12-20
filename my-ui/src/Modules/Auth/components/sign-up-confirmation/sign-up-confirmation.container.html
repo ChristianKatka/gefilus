@@ -1,0 +1,13 @@
+<main class="flex-row align-center-center">
+  <section [style.width]="'90%'" *ngIf="email$ | async as email">
+    <clap-app-sign-up-confirmation-form
+      [isLoading]="isLoading$ | async | onlyBoolean"
+      [emailConfirmationCodeMismatch]="emailConfirmationCodeMismatch$ | async | onlyBoolean"
+      [newConfirmationCodeSent]="newConfirmationCodeSent$ | async | onlyBoolean"
+      [newConfirmationCodeLimitExceeded]="newConfirmationCodeLimitExceeded$ | async | onlyBoolean"
+      [email]="email"
+      (confirmationCodeSubmitted)="onConfirmationCodeSubmitted($event)"
+      (sendNewEmailConfirmationCode)="onSendNewEmailConfirmationCode()"
+    ></clap-app-sign-up-confirmation-form>
+  </section>
+</main>

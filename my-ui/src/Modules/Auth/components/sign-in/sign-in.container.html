@@ -1,0 +1,10 @@
+<main class="flex-row align-center-center">
+  <section [style.width]="'90%'">
+    <app-sign-in-form
+      [isLoading]="isLoading$ | async | onlyBoolean"
+      [isWrongUsernameOrPassword]="isWrongUsernameOrPassword$ | async | onlyBoolean"
+      (signIn)="onSignIn($event)"
+    >
+    </app-sign-in-form>
+  </section>
+</main>

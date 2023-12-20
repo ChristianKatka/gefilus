@@ -1,0 +1,20 @@
+<section class="flex-row" *ngIf="emailConfirmationCodeMismatch">
+  <div class="icon-wrapper flex-row align-center-start">
+    <mat-icon>error_outline</mat-icon>
+  </div>
+  <div class="text-wrapper">
+    <span
+      >Incorrect or outdated confirmation code. Verify the code from your email
+      or obtain a new one by pressing the button below.</span
+    >
+  </div>
+</section>
+
+<section class="flex-row" *ngIf="newConfirmationCodeLimitExceeded">
+  <div class="icon-wrapper flex-row align-center-start">
+    <mat-icon>error_outline</mat-icon>
+  </div>
+  <div class="text-wrapper">
+    <span>Code requested too often. Please wait and try again later.</span>
+  </div>
+</section>

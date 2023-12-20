@@ -1,0 +1,44 @@
+@use "../../../../styles/variables/" as *;
+
+object {
+  width: 15rem;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+
+.description-text {
+  color: var(--light-gray);
+}
+
+form {
+  margin-top: 1rem;
+
+  input {
+    font-size: 2rem;
+  }
+}
+
+mat-form-field {
+  margin: 1rem 0;
+}
+
+.resend-code {
+  margin-top: 1rem;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.confirm-button {
+  margin-top: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+.sign-up-page {
+  color: var(--primary-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}

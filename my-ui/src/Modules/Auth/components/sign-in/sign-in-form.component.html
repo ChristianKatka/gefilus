@@ -1,0 +1,67 @@
+<section class="flex-row align-center-center">
+  <object data="assets/art/login.svg" type="image/svg+xml"></object>
+</section>
+
+<h1>Login</h1>
+
+<app-error-box
+  *ngIf="isWrongUsernameOrPassword"
+  text="Wrong email or password."
+></app-error-box>
+
+<form class="flex-column align-center-center" [formGroup]="signInForm">
+  <mat-form-field appearance="outline">
+    <mat-error *ngIf="signInForm.get('username')?.hasError('required')"
+      >Email is required</mat-error
+    >
+    <mat-error *ngIf="signInForm.get('username')?.hasError('email')">
+      Input real email address
+    </mat-error>
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      maxlength="40"
+      type="email"
+      autocomplete="email"
+      formControlName="username"
+    />
+    <mat-icon class="material-icons-outlined" matPrefix>mail</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-error *ngIf="signInForm.get('password')?.hasError('required')"
+      >Password is required</mat-error
+    >
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      maxlength="40"
+      [type]="showPassword ? 'text' : 'password'"
+      formControlName="password"
+    />
+    <mat-icon class="material-icons-outlined" matPrefix>lock</mat-icon>
+    <mat-icon
+      matSuffix
+      (click)="showPassword = !showPassword"
+      class="toggleShowPasswordButton material-icons-outlined"
+      >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
+    >
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    mat-button
+    color="primary"
+    (click)="submit()"
+    [disabled]="this.signInForm.invalid"
+    *ngIf="!isLoading"
+  >
+    Login
+  </button>
+
+  <button *ngIf="isLoading" mat-raised-button color="primary" disabled>
+    <app-loading-spinner [diameter]="30"></app-loading-spinner>
+  </button>
+
+  <span>Dont have an account? <b routerLink="/sign-up">Create Account</b></span>
+</form>

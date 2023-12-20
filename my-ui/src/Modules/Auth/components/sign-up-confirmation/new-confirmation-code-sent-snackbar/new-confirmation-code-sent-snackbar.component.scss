@@ -1,0 +1,11 @@
+@use "../../../../../styles/variables/" as *;
+
+div {
+  color: var(--success-green);
+}
+span {
+  font-weight: bold;
+}
+mat-icon {
+  margin-left: 0.5rem;
+}

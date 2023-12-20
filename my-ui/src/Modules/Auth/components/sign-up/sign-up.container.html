@@ -1,0 +1,11 @@
+<main class="flex-row align-center-center">
+  <section [style.width]="'90%'">
+    <clap-app-sign-up-form
+      [isLoading]="isLoading$ | async | onlyBoolean"
+      [usernameAlreadyExists]="usernameAlreadyExists$ | async | onlyBoolean"
+      (showTermsOfService)="onShowTermsOfService()"
+      (showPrivacyPolicy)="onShowPrivacyPolicy()"
+      (signUp)="onSignUp($event)"
+    ></clap-app-sign-up-form>
+  </section>
+</main>
