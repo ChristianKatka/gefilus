@@ -79,9 +79,8 @@ export class CognitoService {
 
   signOut() {
     const currentUser = this.userPool.getCurrentUser();
-    if (currentUser != null) {
-      currentUser.signOut();
-    }
+    if (!currentUser) return;
+    currentUser.signOut();
   }
 
   // sign in new password required. (User created from AWS console)
