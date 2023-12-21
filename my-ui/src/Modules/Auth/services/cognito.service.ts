@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SignUpUserData } from '../models/sign-up-user-data.model';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -9,11 +8,15 @@ import {
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { AuthenticateUserService } from './authenticate-user.service';
-import { CognitoFunctionsService } from './cognito-functions.service';
-import { ModifyUserService } from './modify-user.service';
-import { SignUpService } from './sign-up.service';
-import { UserSessionService } from './user-session.service';
+import { SignUpUserData } from '../models/sign-up-user-data.model';
+import { getSession } from './utility-services/get-session.util';
+import { createLocalCognitoUser } from './utility-services/create-local-cognito-user.util';
+import { resendConfirmationCode } from './utility-services/resend-confirmation-code.util';
+import { authenticateUser } from './utility-services/authenticate-user.util';
+import { signUp } from './utility-services/sign-up-util';
+import { changePassword } from './utility-services/change-password.util';
+import { confirmRegistration } from './utility-services/confirm-registration.util';
+
 declare let AWS: any;
 
 @Injectable({
@@ -25,13 +28,7 @@ export class CognitoService {
   // Used to store locally logged in user data
   private cognitoUser: CognitoUser | null = null;
 
-  constructor(
-    private signUpService: SignUpService,
-    private authenticateUserService: AuthenticateUserService,
-    private modifyUserService: ModifyUserService,
-    private userSessionService: UserSessionService,
-    private cognitoFunctionsService: CognitoFunctionsService
-  ) {
+  constructor() {
     AWS.config.region = environment.cognito.region;
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       IdentityPoolId: environment.cognito.identityPoolId,
@@ -51,22 +48,18 @@ export class CognitoService {
     if (currentUser == null) {
       return of(false);
     } else {
-      return this.userSessionService
-        .getSession(currentUser)
-        .pipe(map((session) => session.isValid()));
+      return getSession(currentUser).pipe(map((session) => session.isValid()));
     }
   }
 
   sendNewEmailConfirmationCode(userName: string): Observable<any> {
-    const currentUser =
-      this.cognitoFunctionsService.createLocalCognitoUser(userName);
-    return this.cognitoFunctionsService.resendConfirmationCode(currentUser);
+    const currentUser = createLocalCognitoUser(userName);
+    return resendConfirmationCode(currentUser);
   }
 
   // login
   authenticateUser(userName: string, password: string): Observable<any> {
-    const currentUser: CognitoUser =
-      this.cognitoFunctionsService.createLocalCognitoUser(userName);
+    const currentUser: CognitoUser = createLocalCognitoUser(userName);
 
     // Used to store locally logged in user data
     this.cognitoUser = currentUser;
@@ -77,17 +70,11 @@ export class CognitoService {
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
-    return this.authenticateUserService.authenticateUser(
-      currentUser,
-      authenticationDetails
-    );
+    return authenticateUser(currentUser, authenticationDetails);
   }
 
   signUp(signUpUserData: SignUpUserData): Observable<any> {
-    console.log('again:');
-    console.log(signUpUserData);
-
-    return this.signUpService.signUp(this.userPool, signUpUserData);
+    return signUp(this.userPool, signUpUserData);
   }
 
   signOut() {
@@ -102,7 +89,7 @@ export class CognitoService {
     if (this.cognitoUser === null) {
       return of({ error: 'no user' });
     }
-    return this.modifyUserService.changePassword(this.cognitoUser, newPassword);
+    return changePassword(this.cognitoUser, newPassword);
   }
 
   //  email confirmation code inputted
@@ -110,10 +97,9 @@ export class CognitoService {
     userName: string,
     code: string
   ): Observable<any> {
-    const currentUser =
-      this.cognitoFunctionsService.createLocalCognitoUser(userName);
+    const currentUser = createLocalCognitoUser(userName);
 
-    return this.signUpService.confirmRegistration(currentUser, code);
+    return confirmRegistration(currentUser, code);
   }
 
   // USED BY AUTH HTTP
@@ -123,7 +109,7 @@ export class CognitoService {
     if (currentUser === null) {
       return of('Current user is null');
     }
-    return this.userSessionService.getSession(currentUser).pipe(
+    return getSession(currentUser).pipe(
       map((session) => session.getIdToken()),
       map((idToken) => idToken.getJwtToken())
     );

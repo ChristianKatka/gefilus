@@ -1,11 +1,26 @@
 @use "./common/" as *;
 @use "./variables/" as *;
+// @import "~@bryntum/gantt/gantt.material.css";
 
-html,
-body {
-  height: 100%;
-}
-body {
+// html,
+// body {
+//   height: 100%;
+// }
+// body {
+//   margin: 0;
+//   font-family: Roboto, "Helvetica Neue", sans-serif;
+// }
+
+body,
+html {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Poppins, "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+app-root {
+  flex: 1 1 100%;
 }
